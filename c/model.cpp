@@ -634,7 +634,7 @@ void make_sync2(Cell tollbooth[][LENGTH], int B, int L, int length1, Mat pic, Ma
                 }
                 else if(check_out(tmp_x, tmp_y, B, L, length1) == -1){
                     flux++;
-                    tollbooth[i][j].time++;
+                    // tollbooth[i][j].time++;
                     tollbooth[tmp_x][tmp_y].change = 0;
                     tollbooth[tmp_x][tmp_y].accelerate = 0;
                     tollbooth[i][j].status = 0;
