@@ -4,7 +4,7 @@
 #include "model.h"
 #include <ctime>
 #include <cstdlib>
-#include <stdio.h>`
+#include <stdio.h>
 
 
 double p = 0.1;

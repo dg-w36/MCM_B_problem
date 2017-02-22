@@ -155,4 +155,37 @@ class CA_street :
                     self.out += 1
     
     def get_v_and_pos(self, i, j, dir) :
-        return 1
+        if dir == 1 : # 正向查找
+            pos = j+1
+            v = 100 * np.ones(10)
+            while pos < self.tb_length[i] :
+                if self.toll_booth[i,pos]['status'] and self.toll_booth[i,pos]['change'] == 0 :
+                    v[1] = self.toll_booth[i,pos]['v'] + self.toll_booth[i,pos]['acc']
+
+                if self.check_out(i-1,pos) and self.toll_booth[i-1,pos]['status'] and self.toll_booth[i-1,pos]['change'] == 0 :
+                    v[2] = self.toll_booth[i-1,pos]['v'] + self.toll_booth[i-1,pos]['acc']
+                if self.check_out(i+1,pos) and self.toll_booth[i+1,pos]['status'] and self.toll_booth[i+1,pos]['change'] == 0 :
+                    v[3] = self.toll_booth[i+1,pos]['v'] + self.toll_booth[i+1,pos]['acc']
+
+                v[0] = min(v)
+                if v[0] != 100 :
+                    return [pos, v[0]]
+                pos += 1
+            return [pos, v[0]]
+        elif dir == 0 :
+            pos = j-1
+            v = 0
+            while pos >= 0 :
+                if self.toll_booth[i,pos]['status'] and self.toll_booth[i,pos]['change'] == 0 :
+                    v = self.toll_booth[i,pos]['v']
+                    return [pos, v]
+                pos -= 1
+            return [pos, v]
+
+    def get_gap(self, v1, v2 ,is_auto=False) :
+        gama = 0.4
+        da = 2
+        gap = 1 + (v1**2 - v2**2)/(2*da) + 2*gama*v1 + 0.5
+        if is_auto :
+            gap -= 2 * gama *v1
+        return int(gap) + v1 - v2
